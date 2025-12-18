@@ -19,6 +19,10 @@ const App: React.FC = () => {
       try {
         const parsed = JSON.parse(saved);
         setReports(parsed);
+        // If there are reports, default the "current" one to the most recent in history
+        if (parsed.length > 0 && !currentReport) {
+          setCurrentReport(parsed[0]);
+        }
       } catch (e) {
         console.error("Failed to load history", e);
       }
@@ -32,7 +36,10 @@ const App: React.FC = () => {
   const handleScan = async () => {
     setIsLoading(true);
     try {
-      const report = await fetchAndAnalyzeNews();
+      // Pass the most recent report as a baseline context
+      const baselineReport = reports.length > 0 ? reports[0] : null;
+      const report = await fetchAndAnalyzeNews(baselineReport);
+      
       setReports(prev => [report, ...prev]);
       setCurrentReport(report);
       setActiveTab('dashboard');

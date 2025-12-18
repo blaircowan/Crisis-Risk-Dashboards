@@ -11,8 +11,10 @@ export interface IndicatorResult {
   name: string;
   score: number; // -5 to +5
   severity: number; // 1 to 5
-  evidence: string;
+  evidence: string; // Short single-line tactical evidence
+  appraisal: string; // Detailed overview and intelligence appraisal
   averageSixMonthScore: number; // Synthetic average for trending logic
+  historicalTrend: number[]; // 6 values representing the last 6 months (one per month)
 }
 
 export interface Source {

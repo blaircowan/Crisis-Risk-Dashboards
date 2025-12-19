@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { CrisisReport, EscalationLevel } from '../types';
-import { Archive, ArrowRight, Clock, ShieldAlert, FileText, ChevronDown, ChevronUp, TrendingUp } from 'lucide-react';
+import { CrisisReport, EscalationLevel, Country } from '../types';
+import { Archive, ArrowRight, Clock, ShieldAlert, FileText, ChevronDown, ChevronUp, TrendingUp, MapPin } from 'lucide-react';
 
 interface HistoricalReportsProps {
   reports: CrisisReport[];
@@ -33,20 +33,26 @@ const ReportCard: React.FC<{
     >
       <div className={`h-1.5 w-full ${getEscalationColor(report.escalationLevel)}`}></div>
       <div className="p-6 flex-1 flex flex-col">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <span className="text-[10px] font-mono text-slate-500 uppercase flex items-center gap-1">
             <Clock className="w-3 h-3" />
             {new Date(report.timestamp).toLocaleDateString()}
           </span>
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
-            report.escalationLevel === EscalationLevel.CRITICAL ? 'bg-red-900/20 border-red-800 text-red-500' : 
-            'bg-slate-800 border-slate-700 text-slate-400'
-          }`}>
-            {report.escalationLevel}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] font-bold bg-blue-900/30 text-blue-400 px-2 py-0.5 rounded border border-blue-800 flex items-center gap-1">
+              <MapPin className="w-2.5 h-2.5" />
+              {report.country.toUpperCase()}
+            </span>
+            <span className={`text-[9px] font-bold px-2 py-0.5 rounded border ${
+              report.escalationLevel === EscalationLevel.CRITICAL ? 'bg-red-900/20 border-red-800 text-red-500' : 
+              'bg-slate-800 border-slate-700 text-slate-400'
+            }`}>
+              {report.escalationLevel}
+            </span>
+          </div>
         </div>
         
-        <div className="flex items-start gap-2 mb-3">
+        <div className="flex items-start gap-2 mb-3 mt-2">
           <FileText className="w-4 h-4 text-blue-500 shrink-0 mt-1" />
           <h3 className="text-white font-bold text-base leading-tight group-hover:text-blue-400 transition-colors">
             {report.summary.length > 80 && !isExpanded ? `${report.summary.substring(0, 80)}...` : report.summary}
@@ -95,7 +101,7 @@ const ReportCard: React.FC<{
           </button>
 
           <div className="flex items-center justify-between pt-2 border-t border-slate-800/50">
-            <span className="text-[10px] font-mono text-slate-600 uppercase">ASSET_ID: {report.id}</span>
+            <span className="text-[10px] font-mono text-slate-600 uppercase">ID: {report.id}</span>
             <button 
               onClick={() => onSelect(report)}
               className="text-red-500 flex items-center gap-1 text-xs font-bold uppercase tracking-wider hover:text-red-400 transition-colors group/btn"
@@ -135,7 +141,7 @@ const HistoricalReports: React.FC<HistoricalReportsProps> = ({ reports, onSelect
         </div>
         <div className="flex flex-col items-end">
           <span className="text-xs font-mono text-slate-500 uppercase tracking-widest">{reports.length} Reports Logged</span>
-          <span className="text-[9px] text-slate-600 uppercase">Archive contains paragraph-level intelligence data</span>
+          <span className="text-[9px] text-slate-600 uppercase">Archive contains regional intelligence snapshots</span>
         </div>
       </div>
 

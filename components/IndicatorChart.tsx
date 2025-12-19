@@ -2,8 +2,7 @@
 import React from 'react';
 import { 
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, 
-  ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, 
-  Tooltip, Cell, ReferenceLine
+  ResponsiveContainer, Tooltip 
 } from 'recharts';
 import { IndicatorResult } from '../types';
 
@@ -12,15 +11,25 @@ interface IndicatorChartProps {
 }
 
 const IndicatorChart: React.FC<IndicatorChartProps> = ({ data }) => {
-  // Format data for radar
-  const chartData = data.map(item => ({
-    subject: item.name.split(' ').map(s => s[0]).join(''), // Abbreviations
-    fullName: item.name,
-    score: item.score,
-    absScore: Math.abs(item.score),
-    severity: item.severity,
-    fullMark: 5
-  }));
+  // Format data for radar with smarter abbreviations
+  const chartData = data.map(item => {
+    const words = item.name.split(' ');
+    let subject = "";
+    if (words.length >= 2) {
+      subject = words.map(w => w[0]).join('').toUpperCase();
+    } else {
+      subject = item.name.substring(0, 3).toUpperCase();
+    }
+
+    return {
+      subject,
+      fullName: item.name,
+      score: item.score,
+      absScore: Math.abs(item.score),
+      severity: item.severity,
+      fullMark: 5
+    };
+  });
 
   return (
     <div className="h-[350px] w-full flex flex-col items-center justify-center">
@@ -45,19 +54,19 @@ const IndicatorChart: React.FC<IndicatorChartProps> = ({ data }) => {
             fillOpacity={0.6}
           />
           <Tooltip 
-            contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', color: '#f8fafc' }}
-            formatter={(value: any, name: any, props: any) => [`Score: ${props.payload.score}`, props.payload.fullName]}
+            contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', color: '#f8fafc', fontSize: '10px' }}
+            formatter={(value: any, name: any, props: any) => [`Intensity: ${value}`, props.payload.fullName]}
           />
         </RadarChart>
       </ResponsiveContainer>
       
-      <div className="text-[10px] text-slate-500 uppercase font-mono mt-4 flex gap-4">
-        <div className="flex items-center gap-1.5">
+      <div className="text-[9px] text-slate-500 uppercase font-mono mt-4 px-4 text-center leading-tight">
+        <div className="flex items-center justify-center gap-1.5 mb-2">
           <div className="w-2 h-2 rounded-sm bg-red-500"></div>
-          Signal Intensity
+          Vector Intensity Mapping
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="text-slate-600">Legend: SF=Security Failure, LN=LNA Tension, CU=Civil Unrest...</span>
+        <div className="opacity-50">
+          Abbreviation legend based on initialisms of regional indicators.
         </div>
       </div>
     </div>

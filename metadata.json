@@ -1,5 +1,5 @@
 {
-  "name": "Libya Crisis Risk Dashboard",
-  "description": "A high-precision intelligence analysis tool that monitors Libyan stability indicators using Gemini AI. It evaluates news articles across 12 critical risk frameworks to provide escalation levels, strategic insights, and visual risk scoring for senior analysts.",
+  "name": "Crisis Radar AI",
+  "description": "A high-precision multi-regional intelligence tool monitoring stability in Libya and Lebanon. It evaluates regional OSINT via Gemini AI across specialized risk frameworks, providing tactical scoring, strategic insights, and geolocated kinetic event analysis.",
   "requestFramePermissions": []
 }
